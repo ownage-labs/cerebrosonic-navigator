@@ -1,2 +1,6 @@
-# cerebrosonic-cli
-audio-enabled agentic cli (osx-m1/ollama/python)
+# cerebrosonic-navigator
+speech-driven agentic cli (osx-m1/ollama/python)
+
+- primary use case: generate command line inputs
+- capture user speech -> translate to prompt -> [guardrail] -> conduct local inference -> present generated command [verbal ask to execute] -> execute command
+
