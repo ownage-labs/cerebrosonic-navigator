@@ -1,4 +1,4 @@
-# $${\color{red}c}$$erebrosonic-navigator
+# cerebrosonic-navigator
 speech-driven agentic cli (osx-m1/ollama/python)
 
 - primary use case: generate command line inputs based on spoken user inputs
