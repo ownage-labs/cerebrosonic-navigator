@@ -12,15 +12,13 @@ cbro configure granulator json/raw/xml/yaml (output format)
 ## Terminology
 **Matrice**: The Matrice serves as the foundation for your Cerebrosonic 
 Navigator, connecting to a Large Language Model (LLM) like Llama 3.2 
-to generate responses based on user input. By specifying the matrice 
-configuration, you can control the level of guidance provided by the 
-LLM.
+to generate responses based on user input, via Ollama. By specifying the matrice configuration, you can control what model to use for local inference. 
 
 **Cortex**: The Cortex is a pre-built system prompt that acts as a 
 framework for your Cerebrosonic Navigator's response generation. This 
 pre-defined prompt provides a structured starting point for the LLM 
 to generate customized responses, ensuring consistency and coherence 
-in the output.
+in the output. The Cortex is evaluated at Matrice inference-time.
 
 **Granulator**: The Granulator takes the generated response from the 
 LLM and refines it into a formatted, user-friendly output. By 
@@ -30,4 +28,4 @@ tone, and style, to create a seamless user experience.
 
 ## Troubleshoot
 - pyaudio requires portaudio on Mac/OSX. brew install portaudio.
-- torch does not always run on the latest versions of python. use pyenv to set the global python version before you create the venv.
+- torch confirmed on python3.9. use pyenv to set the global python version before you create the venv.
