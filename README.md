@@ -12,7 +12,7 @@ cbro configure granulator json/raw/xml/yaml (output format)
 ## Terminology
 **Matrice**: The Matrice serves as the foundation for your Cerebrosonic 
 Navigator, connecting to a Large Language Model (LLM) like Llama 3.2 
-to generate responses based on user input. By specifying the matrix 
+to generate responses based on user input. By specifying the matrice 
 configuration, you can control the level of guidance provided by the 
 LLM.
 
