@@ -7,12 +7,12 @@ from datetime import datetime
 app = typer.Typer()
 
 @app.command()
-def fuse(matrice: str, quortext: str, distiller: str):
+def fuse(matrice: str, quortext: str):
 
     start_time = datetime.now()
     latency = None
     
-    print(f"Fuse initialized --| matrice:{matrice} | quortext:{quortext} | distiller:{distiller}")
+    print(f"Fuse initialized --| matrice:{matrice} | quortext:{quortext}")
 
     print("Wait until you see the 'recording' prompt then dictate your request...")
 
@@ -34,15 +34,16 @@ def fuse(matrice: str, quortext: str, distiller: str):
 
     print(f"quortext={quortext}")
     print(f"transcription={text_transcription}")
-    print(f"distiller={distiller}")
-
-    prompt = quortext + "\n" + text_transcription + "\n" + distiller
 
     # Call Ollama API
     response = chat(matrice,  messages=[
         {
+            'role': 'system',
+            'content': quortext,
+        },
+        {
             'role': 'user',
-            'content': prompt,
+            'content': text_transcription,
         },
         ])
     
