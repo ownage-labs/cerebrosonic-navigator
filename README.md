@@ -1,5 +1,5 @@
 # Cerebrosonic Navigator (cbro)
-# Local Audio-Enabled AI CLI Assistant
+# Local LLM-enabled Speech-Driven CLI Assistant
 
 ## Example Usage
 

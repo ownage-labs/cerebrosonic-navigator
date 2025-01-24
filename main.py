@@ -7,8 +7,6 @@ import wave
 from dotenv import load_dotenv
 from rich import print
 from ollama import chat, ChatResponse
-# import sounddevice as sd
-# import soundfile as sf
 from RealtimeSTT import AudioToTextRecorder
 
 # load_dotenv()
@@ -30,14 +28,26 @@ def fuse(matrice: str, quortext: str, distiller: str):
         recorder.start()
         input("Press Enter to stop recording...")
         recorder.stop()
-        print("Transcription: ", recorder.text())
+        text_transcription = recorder.text()
+        print(f"Transcription: {text_transcription}")
 
-    # samplerate = 44100 # hertz
-    # duration = 5
-    # filename = 'output.wav'
+    # Generate prompt by combining test.quortext file and transcription
 
-    # mydata = sd.rec(int(samplerate * duration), samplerate=samplerate, channels=1, blocking=False)
-    # sf.write(filename, mydata, samplerate)
+    with open(quortext, 'r') as file:
+        quortext = file.read()
+    prompt = quortext + "\n" + text_transcription
+    print(prompt)
+    # Call Ollama API
+    response = chat(matrice,  messages=[
+        {
+            'role': 'user',
+            'content': prompt,
+        },
+        ])
+    print(f"Response: {response}")
+    # Save response to a file
+    with open("response.txt", "w") as file:
+        file.write(str(response))
     
 if __name__ == "__main__":
     app()
