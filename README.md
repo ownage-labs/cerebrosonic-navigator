@@ -4,10 +4,8 @@
 ## Example Usage
 
 ```
-cbro fuse --matrice llama3.2 --quortext cli --distillerator json/raw/xml/yaml
-matrice llama3.2 (ollama model)
-quortext file://cli-commands.quortext (system prompt + few-shot examples)
-distiller json/raw/xml/yaml (output format)
+python main.py MATRICE QUORTEXT DISTILLER
+python main.py llama3.2 cli-output.quortext 3
 ```
 
 ## Terminology
