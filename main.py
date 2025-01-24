@@ -32,11 +32,14 @@ def fuse(matrice: str, quortext: str, distiller: str):
         print(f"Transcription: {text_transcription}")
 
     # Generate prompt by combining test.quortext file and transcription
-
     with open(quortext, 'r') as file:
         quortext = file.read()
+
+    print(f"quortext:{quortext}")
+    print(f"transcription:{text_transcription}")
+
     prompt = quortext + "\n" + text_transcription
-    print(prompt)
+
     # Call Ollama API
     response = chat(matrice,  messages=[
         {
@@ -44,7 +47,9 @@ def fuse(matrice: str, quortext: str, distiller: str):
             'content': prompt,
         },
         ])
+    
     print(f"Response: {response}")
+    
     # Save response to a file
     with open("response.txt", "w") as file:
         file.write(str(response))
