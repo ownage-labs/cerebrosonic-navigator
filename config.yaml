@@ -1,0 +1,3 @@
+local_model: llama3.2
+quortext: Present all output as just the raw CLI command or just the raw YAML if asked to generate a file.
+distiller: Bash on MacOS or Linux
