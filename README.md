@@ -8,8 +8,6 @@ python main.py CONFIG
 python main.py config.yaml
 ```
 
-## Configuration File
-
 ## Troubleshoot
 - pyaudio requires portaudio on Mac/OSX. brew install portaudio.
 - torch confirmed on python3.9. use pyenv to set the global python version before you create the venv.

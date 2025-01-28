@@ -1,3 +1,27 @@
-local_model: llama3.2
-quortext: Present all output as just the raw CLI command or just the raw YAML if asked to generate a file.
-distiller: Bash on MacOS or Linux
+apiVersion: v1
+kind: Config
+metadata:
+  name: cerebrosonic-navigator-config
+  description: speech-driven command line expert
+  author: ownage-labs
+  date: 01/23/2025
+spec:
+  models:
+    ollama: llama3.2
+    realtimestt: whisper-tiny ## TODO: add support for realtimestt model selection
+  ooda_loop:
+    observe: >
+      You are a command line (CLI) expert. 
+      Your task is to find the command or combinations of commands that best match the user's input.
+      You must be 100% sure your response does not include any arguments or parameters for the command.
+    orient: >
+      Analyze the observed data.
+      Identify patterns and potential solutions.
+      Consider best practices and user requirements.
+    decide: >
+      Select the most appropriate course of action
+      based on the analysis and available options.
+    act: >
+      Execute the chosen solution.
+      Provide clear explanations and code examples.
+      Verify the results meet requirements.
