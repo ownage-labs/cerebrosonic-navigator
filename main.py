@@ -2,6 +2,7 @@ import typer
 import yaml
 import logging
 import subprocess
+import sglang as sgl
 from typing import Optional
 from ollama import chat
 from RealtimeSTT import AudioToTextRecorder
@@ -20,7 +21,7 @@ app = typer.Typer()
 class CerebrosonicNavigator:
     def __init__(self, config_path: str):
         self.config_data = self.load_config(config_path)
-        self.local_model = self.config_data.get('spec', {}).get('models', {}).get('ollama', 'llama3.2')
+        self.ollama_model = self.config_data.get('spec', {}).get('models', {}).get('ollama', 'llama3.2')
         self.realtimestt_model = self.config_data.get('spec', {}).get('models', {}).get('realtimestt', 'whisper-tiny')
         self.ooda_loop = self.config_data.get('spec', {}).get('ooda_loop', {})
 
@@ -34,7 +35,7 @@ class CerebrosonicNavigator:
             logger.error(f"Error loading config: {e}")
             raise typer.Exit(1)
 
-    def get_transcription(self) -> str:
+    def transcribe(self) -> str:
         """Record and transcribe audio input. User must press Enter to stop recording."""
         with AudioToTextRecorder() as recorder:
             recorder.start()
@@ -43,10 +44,10 @@ class CerebrosonicNavigator:
             transcription = recorder.text()
             return transcription
 
-    def query_llm(self, system_prompt: str, user_input: str) -> str:
+    def query_ollama(self, system_prompt: str, user_input: str) -> str:
         """Query the LLM with system prompt and user input."""
         try:
-            response = chat(self.local_model, messages=[
+            response = chat(self.ollama_model, messages=[
                 {'role': 'system', 'content': system_prompt},
                 {'role': 'user', 'content': user_input},
             ])
@@ -66,6 +67,7 @@ class CerebrosonicNavigator:
             str: The manpage for the command.
         """
         try:
+            command = command.split()[0]
             result = subprocess.run(['man', command], capture_output=True, text=True)
             print(f"Manpage for {command}:\n{result}")
             return result
@@ -73,14 +75,14 @@ class CerebrosonicNavigator:
             logger.error(f"Error fetching manpage for {command}: {e}")
             return ""
 
-    def observe(self, user_input: str) -> str:
+    def navigate_cli_with_ollama(self, user_input: str) -> str:
         """Find commands associated with user's input."""
         try:
-            print(f"Querying Ollama with model: {self.local_model}, ooda_loop: {self.ooda_loop}, user_input: {user_input}")
-            print(f"Observation: {self.ooda_loop.get('observe')}")
+            print(f"Querying Ollama with model: {self.ollama_model}, user_input: {user_input}")
+            print(f"Observe YAML Content: {self.ooda_loop.get('observe')}")
 
             response = chat(
-                self.local_model, 
+                self.ollama_model, 
                 messages=[
                 {'role': 'system', 'content': self.ooda_loop.get('observe')},
                 {'role': 'user', 'content': user_input},
@@ -107,61 +109,44 @@ class CerebrosonicNavigator:
         
         return response
 
-    def orient(self, observables: str) -> str:
-        """Read through the manpages to find the best command and arguments."""
+    def navigate_bash_cli_with_sglang(self, user_input: str) -> str:
+        """Find commands associated with user's input."""
+        
         try:
-            print(f"Querying Ollama with model: {self.local_model}, role: {self.role}, user_input: {observables}")
-            response = chat(
-                self.local_model, 
-                messages=[
-                {'role': 'system', 'content': self.role},
-                {'role': 'user', 'content': observables},
-                {'role': 'assistant', 'content': 'test'}
-                ],
-            )
-        except Exception as e:
-            logger.error(f"Error querying LLM: {e}")
-            raise typer.Exit(1)    
-        return response
+            print(f"Querying Ollama with model: {self.ollama_model}, user_input: {user_input}")
 
-    def decide(self, orientables: str) -> str:
-        """Decide which command to use."""
-        try:
-            print(f"Querying Ollama with model: {self.local_model}, role: {self.role}, user_input: {orientables}")
-            response = chat(
-                self.local_model, 
-                messages=[
-                {'role': 'system', 'content': self.role},
-                {'role': 'user', 'content': orientables},
-                ],
+            backend = sgl.OpenAI(
+                model_name=self.ollama_model,
+                base_url="http://127.0.0.1:11434/v1",
+                api_key="EMPTY"
             )
-        except Exception as e:
-            logger.error(f"Error querying LLM: {e}")
-            raise typer.Exit(1)    
-        return response
+            sgl.set_default_backend(backend)
 
-    def act(self, decidables: str) -> str:
-        """Provide response to user based on OOD input."""
-        try:
-            print(f"Querying Ollama with model: {self.local_model}, role: {self.role}, user_input: {decidables}")
-            response = chat(
-                self.local_model, 
-                messages=[
-                {'role': 'system', 'content': self.role},
-                {'role': 'user', 'content': decidables},
-                ],
-            )
+            @sgl.function
+            def ooda_loop(s, input):
+                s += sgl.system("You are a Bash command line (CLI) expert. Your task is to find the command or combinations of commands that best match the user's input. You must be 100% sure your response does not include any arguments or parameters.")
+                s += sgl.user(input)
+                s += sgl.assistant(sgl.gen("manpages", max_tokens=256))
+
+            state = ooda_loop.run(input=user_input)
+
+            for m in state.messages():
+                print(m["role"], ":", m["content"])
+
+            print(state["manpages"])
+
         except Exception as e:
             logger.error(f"Error querying LLM: {e}")
             raise typer.Exit(1)    
-        return response
+        
+        return "test"
 
 @app.command()
 def fuse(
     config_path: str = typer.Argument(..., help="Path to the configuration YAML file")
 ):
     """
-    Record audio input and process it through a local LLM using tool-use RAG to implement an OODA loop for CLI command generation.
+    Record audio input and process it through a locally hosted LLM including tool-use and RAG to improve accuracy.
     """
     logger.info(f"Initializing with config: {config_path}")    
 
@@ -169,7 +154,7 @@ def fuse(
     
     logger.info(f"Config data: {navigator.config_data}")
 
-    navigator.observe(navigator.get_transcription())
-   
+    navigator.navigate_bash_cli_with_sglang(navigator.transcribe())
+ 
 if __name__ == "__main__":
     app()

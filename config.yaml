@@ -13,7 +13,7 @@ spec:
     observe: >
       You are a command line (CLI) expert. 
       Your task is to find the command or combinations of commands that best match the user's input.
-      You must be 100% sure your response does not include any arguments or parameters for the command.
+      You must be 100% sure your response does not include any arguments or parameters for the commands.
     orient: >
       Analyze the observed data.
       Identify patterns and potential solutions.
