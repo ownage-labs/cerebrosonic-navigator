@@ -127,13 +127,15 @@ class CerebrosonicNavigator:
                 s += sgl.system("You are a Bash command line (CLI) expert. Your task is to find the command or combinations of commands that best match the user's input. You must be 100% sure your response does not include any arguments or parameters.")
                 s += sgl.user(input)
                 s += sgl.assistant(sgl.gen("manpages", max_tokens=256))
+                s += sgl.user("What does this command do?")
+                s += sgl.assistant(sgl.gen("explain_command", max_tokens=256))
 
             state = ooda_loop.run(input=user_input)
 
+            print(f"State: {state}")
+
             for m in state.messages():
                 print(m["role"], ":", m["content"])
-
-            print(state["manpages"])
 
         except Exception as e:
             logger.error(f"Error querying LLM: {e}")
