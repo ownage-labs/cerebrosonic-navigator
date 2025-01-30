@@ -3,7 +3,7 @@
 
 Cerebrosonic Navigator is a prototype project that leverages local Large Language Models (LLMs) to provide a speech-driven command line interface (CLI) assistant. The assistant helps users by interpreting spoken commands, generating appropriate CLI commands, and providing explanations and manpages for those commands.
 
-![Cerebrosonic Navigator](CerebrosonicNavigator.png)
+![Cerebrosonic Navigator](/docs/CerebrosonicNavigator.png)
 
 ## Features
 - **Speech Recognition**: Uses real-time speech-to-text (STT) to transcribe user input.
