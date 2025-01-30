@@ -6,7 +6,6 @@ Cerebrosonic Navigator is a prototype project that leverages local Large Languag
 ## Features
 - **Speech Recognition**: Uses real-time speech-to-text (STT) to transcribe user input.
 - **100% Private Local LLM Integration**: Utilizes local foundation models to interpret user commands and generate appropriate CLI commands.
-- **OODA Loop**: Implements the Observe-Orient-Decide-Act (OODA) loop to refine command generation and improve accuracy.
 - **Tool-Use and RAG**: Incorporates tool-use and Retrieval-Augmented Generation (RAG) to enhance the assistant's capabilities.
 
 ## Example Usage
