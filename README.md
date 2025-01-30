@@ -1,5 +1,5 @@
-# Cerebrosonic Navigator (cbro)
-## Agentic RAG CLI Assistant Prototype
+# Cerebrosonic Navigator Prototype
+## Agentic RAG CLI Assistant
 
 Cerebrosonic Navigator is a prototype project that leverages local Large Language Models (LLMs) to provide a speech-driven command line interface (CLI) assistant. The assistant helps users by interpreting spoken commands, generating appropriate CLI commands, and providing explanations and manpages for those commands.
 
