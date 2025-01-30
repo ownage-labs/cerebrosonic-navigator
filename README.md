@@ -6,7 +6,7 @@ The Cerebrosonic Navigator is a prototype that leverages local Large Language Mo
 ![Cerebrosonic Navigator](/docs/CerebrosonicNavigator.png)
 
 ## Features
-- **100% Private**: Utilizes local hardware and models to interpret user commands and generate appropriate CLI commands.
+- **100% Private**: Utilizes local hardware, models, and applications to interpret user commands and generate appropriate CLI commands.
 - **Open Source Model Support**: Meta Llama 3.2, DeepSeek-V3, DeepSeek-R1
 - **Tool-Use and RAG**: Incorporates tool-use and Retrieval-Augmented Generation (RAG) to enhance the assistant's capabilities.
 - **Speech Recognition**: Can use real-time speech-to-text (STT) to transcribe user input.
