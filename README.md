@@ -9,7 +9,7 @@ A private speech-driven CLI assistant using local LLMs.
 - **Tool-Use and RAG**: Enhanced command suggestions
 - **Simple**: Under 200 lines of code
 
-## Flow
+## On-Device Flow
 ```mermaid
 sequenceDiagram
     participant User as User (Speech)
@@ -22,7 +22,7 @@ sequenceDiagram
     Note over STT: Whisper Tiny Model
     STT->>LLM: Transcribed Text
     Note over LLM: Determine relevant CLI commands
-    LLM->>Man: Function Call: Request Man Page
+    LLM->>Man: Function Call: get_manpage
     Man->>LLM: Command Documentation
     Note over LLM: Analyze manpages
     LLM->>User: Explanation
