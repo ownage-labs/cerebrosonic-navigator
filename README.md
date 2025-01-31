@@ -28,11 +28,11 @@ sequenceDiagram
 ```
 
 ## Example Usage
-```sh
-> python main.py config.yaml --input "How do I see who is logged onto the system?"
-> python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
+```console
+foo@bar:~$ python main.py config.yaml --input "How do I see who is logged onto the system?"
+foo@bar:~$ python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
 
-**Initializing with config**: config.yaml
+Initializing with config: config.yaml
 Processing text input: How do I see who is logged onto the system?
 Processing input with llama3.2
 HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
