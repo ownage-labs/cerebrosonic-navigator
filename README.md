@@ -30,7 +30,8 @@ sequenceDiagram
 ## Example Usage
 ```console
 ~$ python main.py config.yaml --input "How do I see who is logged onto the system?"
-Initializing with config: config.yaml
+Initialized with Ollama model: llama3.2
+Tasks: {'retrieve': "You are a command line (CLI) expert.  Your task is to find the command or combinations of commands that best relate to the user's input. You must be 100% sure your response does not include any arguments or parameters for the commands.\n", 'summarize': "You are a command line (CLI) expert. Explain why the command or combination of commands you found is the best match for the user's input."}
 Processing text input: How do I see who is logged onto the system?
 Processing input with llama3.2
 HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
