@@ -29,8 +29,8 @@ sequenceDiagram
 
 ## Example Usage
 ```console
-foo@bar:~$ python main.py config.yaml --input "How do I see who is logged onto the system?"
-foo@bar:~$ python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
+~$ python main.py config.yaml --input "How do I see who is logged onto the system?"
+~$ python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
 
 Initializing with config: config.yaml
 Processing text input: How do I see who is logged onto the system?
