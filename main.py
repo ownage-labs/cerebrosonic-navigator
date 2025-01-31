@@ -20,7 +20,10 @@ class CerebrosonicNavigator:
     def __init__(self, config_path: str):
         self.config_data = self._load_config(config_path)
         self.ollama_model = self.config_data.get('spec', {}).get('models', {}).get('ollama', 'llama3.2')
-        self.ooda_loop = self.config_data.get('spec', {}).get('ooda_loop', {})
+        self.tasks = self.config_data.get('spec', {}).get('tasks', {})
+
+        logger.info(f"Initialized with Ollama model: {self.ollama_model}")
+        logger.info(f"Tasks: {self.tasks}")
 
     def _load_config(self, path: str) -> Optional[str]:
         try:
@@ -69,16 +72,16 @@ class CerebrosonicNavigator:
             sgl.set_default_backend(backend)
 
             @sgl.function
-            def ooda_loop(s, input):
-                s += sgl.system(self.ooda_loop.get('observe'))
+            def runner(s, input):
+                s += sgl.system(self.tasks.get('retrieve'))
                 s += sgl.user(input)
                 s += sgl.assistant(sgl.gen("command_suggestion", max_tokens=64, temperature=0))
-                s += sgl.user(f"Explain the command you previously suggested.")
-                s += sgl.assistant(sgl.gen("explanation", max_tokens=128, temperature=0))
+                s += sgl.user(self.tasks.get('summarize'))
+                s += sgl.assistant(sgl.gen("summary", max_tokens=128, temperature=0))
 
-            state = ooda_loop.run(input=user_input)
+            state = runner.run(input=user_input)
             command_suggestion = state["command_suggestion"]
-            explanation = state["explanation"]
+            explanation = state["summary"]
 
             logger.debug(f"Response state: {state}")
             logger.info(f"Command suggestion: {command_suggestion}")
@@ -94,17 +97,16 @@ class CerebrosonicNavigator:
         """Find commands associated with user's input."""
         try:
             logger.info(f"Querying Ollama with model: {self.ollama_model}, user_input: {user_input}")
-            logger.info(f"Config OODA Loop Observe Content: {self.ooda_loop.get('observe')}")
 
             response = chat(
                 self.ollama_model, 
                 messages=[
-                {'role': 'system', 'content': self.ooda_loop.get('observe')},
+                {'role': 'system', 'content': self.tasks.get('retrieve')},
                 {'role': 'user', 'content': user_input},
                 ],
                 tools=[self.get_manpage])
             
-            logger.info(f"Observe Response: {response}")
+            logger.info(f"Retrieval Response: {response}")
 
             available_functions = {
                 'get_manpage': self.get_manpage
@@ -125,16 +127,15 @@ class CerebrosonicNavigator:
             logger.info(f"Generating manpage summary")
 
             summary = chat(
-                self.ollama_model,
+                model=self.ollama_model,
                 messages=[
-                    {'role': 'system', 'content': self.ooda_loop.get('observe')},
-                    {'role': 'user', 'content': user_input},
-                    {'role': 'system', 'content': 'The user will provide manual pages for commands associated with their request. You will summarize the options from the manpage output and provide a JSON-only response. The summary should not exceed 300 words.'},
-                    {'role': 'user', 'content': manpages}
+                    {'role': 'system', 'content': self.tasks.get('summarize')},
+                    {'role': 'user', 'content': user_input},              
+                    {'role': 'user', 'content': manpages},
                 ]
             )
 
-            logger.info(f"Summary Response: {summary}")
+            logger.info(f"Summary Response: {summary.message.content}")
 
             return summary.message.content
 
@@ -149,7 +150,6 @@ def main(
     tools: bool = typer.Option(False, "--tools", "-t", help="Use tool-based navigation with manpages")
 ):
     """Record and process audio input through local LLM with RAG"""
-    logger.info(f"Initializing with config: {config_path}")    
     navigator = CerebrosonicNavigator(config_path)
     
     if input:
