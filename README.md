@@ -29,7 +29,7 @@ sequenceDiagram
 
 ## Example Usage
 ```sh
-(.venv) ➜ python main.py config.yaml --input "How do I see who is logged onto the system?"
+> python main.py config.yaml --input "How do I see who is logged onto the system?"
 2025-01-31 08:06:58.685 - INFO - Initializing with config: config.yaml
 2025-01-31 08:06:58.687 - INFO - Processing text input: How do I see who is logged onto the system?
 2025-01-31 08:06:58.687 - INFO - Processing input with llama3.2
@@ -49,7 +49,7 @@ The output typically looks something like this:
 username  pts/0    2023-02-20 14:30 -  14:31 (00:01)
 username  pts/1    2023-02-20 14:32 -  14:33
 
-(.venv) ➜ python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
+> python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
 2025-01-31 08:20:40.475 - INFO - Initializing with config: config.yaml
 2025-01-31 08:20:40.477 - INFO - Processing text input: How do I see who is logged onto the system?
 2025-01-31 08:20:40.477 - INFO - Using tool-based navigation with manpages
