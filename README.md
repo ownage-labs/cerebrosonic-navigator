@@ -40,15 +40,11 @@ HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
 Command suggestion: You can use the 'who' command to view a list of users currently logged on to the system.
 Explanation: 
 The 'who' command is a built-in Linux/Unix command that displays information about the users currently logged on to the system.
-
 When you run the 'who' command, it shows details such as:
-
 * The username of each user
 * The terminal or session ID associated with each user
 * The login time for each user
-
 The output typically looks something like this:
-
 username  pts/0    2023-02-20 14:30 -  14:31 (00:01)
 username  pts/1    2023-02-20 14:32 -  14:33
 ```
