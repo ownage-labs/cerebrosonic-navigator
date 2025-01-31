@@ -30,13 +30,15 @@ sequenceDiagram
 ## Example Usage
 ```sh
 > python main.py config.yaml --input "How do I see who is logged onto the system?"
+```
 Initializing with config: config.yaml
 Processing text input: How do I see who is logged onto the system?
 Processing input with llama3.2
 HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
 HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
 Command suggestion: You can use the 'who' command to view a list of users currently logged on to the system.
-Explanation: The 'who' command is a built-in Linux/Unix command that displays information about the users currently logged on to the system.
+Explanation: 
+The 'who' command is a built-in Linux/Unix command that displays information about the users currently logged on to the system.
 
 When you run the 'who' command, it shows details such as:
 
@@ -49,7 +51,9 @@ The output typically looks something like this:
 username  pts/0    2023-02-20 14:30 -  14:31 (00:01)
 username  pts/1    2023-02-20 14:32 -  14:33
 
+```sh
 > python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
+```
 Initializing with config: config.yaml
 Processing text input: How do I see who is logged onto the system?
 Using tool-based navigation with manpages
