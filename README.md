@@ -1,64 +1,56 @@
 # Cerebrosonic Navigator Prototype
-## 100% Private Agentic RAG CLI Assistant
-
-The Cerebrosonic Navigator is a prototype that leverages local Large Language Models (LLMs) to provide a private speech-driven command line interface (CLI) assistant. The assistant helps users by interpreting spoken commands, generating appropriate CLI commands, and providing explanations and manpages for those commands.
+A private speech-driven CLI assistant using local LLMs.
 
 ![Cerebrosonic Navigator](/docs/CerebrosonicNavigator.png)
 
 ## Features
-- **100% Private**: Utilizes local hardware, models, and applications to interpret user commands and generate appropriate CLI commands.
-- **Open Source Model Support**: Meta Llama 3.2, DeepSeek-V3, DeepSeek-R1
-- **Tool-Use and RAG**: Incorporates tool-use and Retrieval-Augmented Generation (RAG) to enhance the assistant's capabilities.
-- **Speech Recognition**: Can use real-time speech-to-text (STT) to transcribe user input.
+- **100% Private**: Uses local models via Ollama (Llama 3.2, DeepSeek-V3, DeepSeek-R1)
+- **Speech Recognition**: Real-time STT transcription
+- **Tool-Use and RAG**: Enhanced command suggestions
+- **Simple**: Under 200 lines of code
 
-## Local Model Constraints
+## Flow
+```mermaid
+sequenceDiagram
+    participant User as User (Speech)
+    participant STT as RealtimeSTT
+    participant LLM as Ollama/SGL Chat
+    participant Man as Man Pages
 
 
-## Example Usage
+    User->>STT: Spoken Command
+    Note over STT: Whisper Tiny Model
+    STT->>LLM: Transcribed Text
+    Note over LLM: Determine relevant CLI commands
+    LLM->>Man: Function Call: Request Man Page
+    Man->>LLM: Command Documentation
+    Note over LLM: Analyze manpages
+    LLM->>User: Explanation
 
+```
+
+## Usage
 ```sh
-python main.py CONFIG
 python main.py config.yaml
 ```
 
-## Configuration File
-
-The configuration file should be a YAML file with the following structure:
-
+## Configuration
 ```yaml
 apiVersion: v1
 kind: Config
-metadata:
-  name: cerebrosonic-navigator-config
-  description: speech-driven command line expert
-  author: ownage-labs
-  date: 01/23/2025
 spec:
   models:
     ollama: llama3.2
     realtimestt: whisper-tiny
   ooda_loop:
-    observe: >
-      You are a command line (CLI) expert. 
-      Your task is to find the command or combinations of commands that best match the user's input.
-      You must be 100% sure your response does not include any arguments or parameters for the commands.
-    orient: >
-      Analyze the observed data.
-      Identify patterns and potential solutions.
-      Consider best practices and user requirements.
-    decide: >
-      Select the most appropriate course of action
-      based on the analysis and available options.
-    act: >
-      Execute the chosen solution.
-      Provide clear explanations and code examples.
-      Verify the results meet requirements.
+    observe: "You are a CLI expert..."
+    # Additional OODA loop configuration
 ```
 
-## Troubleshoot
-- **pyaudio** requires portaudio on Mac/OSX. Install it using `brew install portaudio`.
-- **torch** confirmed on Python 3.9. Use `pyenv` to set the global Python version before you create the virtual environment.
-- Must install **ffmpeg** for real-time STT. Install it using `brew install ffmpeg`.
+## MacOS Setup Requirements
+- **pyaudio**: `brew install portaudio`
+- **ffmpeg**: `brew install ffmpeg`
+- Python 3.9 recommended
 
 ## License
-This project is licensed under the MIT License.
+Apache License 2.0. See [LICENSE](LICENSE) file for details.
