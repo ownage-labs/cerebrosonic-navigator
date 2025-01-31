@@ -23,7 +23,7 @@ class CerebrosonicNavigator:
         self.tasks = self.config_data.get('spec', {}).get('tasks', {})
 
         logger.info(f"Initialized with Ollama model: {self.ollama_model}")
-        logger.info(f"Tasks: {self.tasks}")
+        logger.debug(f"Tasks: {self.tasks}")
 
     def _load_config(self, path: str) -> Optional[str]:
         try:
@@ -61,8 +61,6 @@ class CerebrosonicNavigator:
 
     def navigate_cli(self, user_input: str) -> str:
         try:
-            logger.info(f"Processing input with {self.ollama_model}")
-            
             # Ollama must be running on port 11434
             backend = sgl.OpenAI(
                 model_name=self.ollama_model,
@@ -77,15 +75,15 @@ class CerebrosonicNavigator:
                 s += sgl.user(input)
                 s += sgl.assistant(sgl.gen("command_suggestion", max_tokens=64, temperature=0))
                 s += sgl.user(self.tasks.get('summarize'))
-                s += sgl.assistant(sgl.gen("summary", max_tokens=128, temperature=0))
+                s += sgl.assistant(sgl.gen("summary", max_tokens=256, temperature=0))
 
             state = runner.run(input=user_input)
             command_suggestion = state["command_suggestion"]
-            explanation = state["summary"]
+            summary = state["summary"]
 
             logger.debug(f"Response state: {state}")
             logger.info(f"Command suggestion: {command_suggestion}")
-            logger.info(f"Explanation: {explanation}")
+            logger.info(f"Summary: {summary}")
 
             return state
 
