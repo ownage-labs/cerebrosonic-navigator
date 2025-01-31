@@ -28,58 +28,73 @@ sequenceDiagram
 ```
 
 ## Example Usage
-```console
-~$ python main.py config.yaml --input "How do I see who is logged onto the system?"
-Initialized with Ollama model: llama3.2
-Tasks: {'retrieve': "You are a command line (CLI) expert.  Your task is to find the command or combinations of commands that best relate to the user's input. You must be 100% sure your response does not include any arguments or parameters for the commands.\n", 'summarize': "You are a command line (CLI) expert. Explain why the command or combination of commands you found is the best match for the user's input."}
-Processing text input: How do I see who is logged onto the system?
-Processing input with llama3.2
-HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
-HTTP Request: POST http://127.0.0.1:11434/v1/chat/completions "HTTP/1.1 200 OK"
-Command suggestion: You can use the 'who' command to view a list of users currently logged on to the system.
-Explanation: 
-    The 'who' command is a built-in Linux/Unix command that displays information about the users currently logged on to the system.
-    When you run the 'who' command, it shows details such as:
-        * The username of each user
-        * The terminal or session ID associated with each user
-        * The login time for each user
-    The output typically looks something like this:
-        username  pts/0    2023-02-20 14:30 -  14:31 (00:01)
-        username  pts/1    2023-02-20 14:32 -  14:33
 
-~$ python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
-Initialized with Ollama model: llama3.2
-Tasks: {'retrieve': "You are a command line (CLI) expert.  Your task is to find the command or combinations of commands that best relate to the user's input. You must be 100% sure your response does not include any arguments or parameters for the commands.\n", 'summarize': "You are a command line (CLI) expert. Explain why the command or combination of commands you found is the best match for the user's input."}
-Processing text input: How do I list all open ports?
-Using tool-based navigation with manpages
-Querying Ollama with model: llama3.2, user_input: How do I list all open ports?
-HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
-Retrieval Response: model='llama3.2' created_at='2025-01-31T19:15:32.095422Z' done=True done_reason='stop' total_duration=1687066291 load_duration=31716875 prompt_eval_count=223 prompt_eval_duration=1135000000 eval_count=21 eval_duration=517000000 message=Message(role='assistant', content='', images=None, tool_calls=[ToolCall(function=Function(name='get_manpage', arguments={'command': 'netstat -an'}))])
-Calling get_manpage for command: netstat -an
-Generating manpage summary
-HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
-Summary Response: 
-    This appears to be a output from the `netstat` command on a macOS system. It provides information about the network connections, routing table, and statistics.
-    Here's a breakdown of what each section displays:
-    **Network Connections**
-        * `Proto Recv-Q Send-Q Local Address           Foreign Address         State`
-        * `tcp        0      0 127.0.0.1:25              *.*                       LISTEN`
-    This shows the number of connections and the protocols used (in this case, TCP).
-    **Routing Table**
-        * `Routing tables`
-        * `Destination Gateway Genmask Flags Interface Local Address           Metrics`
-        * `default    gateway 255.254.254.254     *                U   0      0      0`
-    This displays information about the available routes and their status.
-    **Statistics**
-        * `Interface`
-        * `Rx bytes        Tx bytes         Interrupts`
-        * `eth0             1234567          9876543              12`
-        * `lo               6789012          34567890             34`
-    This shows statistics related to network interfaces, such as receive and transmit bytes.
-    **Running Commands**
-        * `-w` option is used to display running commands related to network interfaces or protocols.
-        * `nstat -s -i 30` would display a summary of all interface statistics every 30 seconds.
+### Standard Navigation
+```bash
+$ python main.py config.yaml --input "How do I list all open ports?"
 ```
+
+<details>
+<summary>View output</summary>
+
+```
+INFO - Initialized with Ollama model: llama3.2
+INFO - Processing text input: How do I list all open ports?
+INFO - Using standard navigation
+INFO - Processing input with llama3.2
+
+Command suggestion: The netstat command
+
+Explanation: 
+**The `netstat` Command**
+
+Command Purpose:
+The `netstat` command displays active Internet connections, routing tables, and interface statistics.
+
+Key Features:
+* Displays information about active network connections
+* Shows listening ports and their corresponding processes
+* Provides information on routing tables and interface statistics
+
+Common Use Cases:
+* Identifying open ports and the processes using them
+* Troubleshooting network connectivity issues
+* Monitoring system performance and resource utilization
+
+Related Commands:
+The `ss` command is an alternative to `netstat`, offering similar functionality with more detailed information.
+```
+</details>
+
+### Tool-based Navigation with Manual Pages
+```bash
+$ python main.py config.yaml --input "How do I list all open ports?" --tools
+```
+
+<details>
+<summary>View output</summary>
+
+```
+INFO - Initialized with Ollama model: llama3.2
+INFO - Processing text input: How do I list all open ports?
+INFO - Using tool-based navigation with manpages
+INFO - Querying Ollama with model: llama3.2
+INFO - Calling get_manpage for command: netstat
+INFO - Generating manpage summary
+
+Command Overview:
+The `netstat` command provides information about active Internet connections, routing tables, 
+interface statistics, and more.
+
+Options Available:
+* -a, --all: Display all connections
+* -i, --interfaces: Display interfaces and their statistics
+* -n, --numeric-ports: Show port numbers instead of hostnames
+* -p, --protocol: Specify a protocol (e.g., TCP, UDP)
+* -r, --routing-table: Display the routing table
+* -s, --statistics: Display statistics about interfaces and protocols
+```
+</details>
 
 ## MacOS Setup Requirements
 - **pyaudio**: `brew install portaudio`
