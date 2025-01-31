@@ -29,7 +29,7 @@ sequenceDiagram
 
 ## Example Usage
 ```sh
-(.venv) ➜  cerebrosonic-navigator git:(main) ✗ python main.py config.yaml --input "How do I see who is logged onto the system?"
+(.venv) ➜ python main.py config.yaml --input "How do I see who is logged onto the system?"
 2025-01-31 08:06:58.685 - INFO - Initializing with config: config.yaml
 2025-01-31 08:06:58.687 - INFO - Processing text input: How do I see who is logged onto the system?
 2025-01-31 08:06:58.687 - INFO - Processing input with llama3.2
@@ -49,14 +49,12 @@ The output typically looks something like this:
 username  pts/0    2023-02-20 14:30 -  14:31 (00:01)
 username  pts/1    2023-02-20 14:32 -  14:33
 
-
-(.venv) ➜  cerebrosonic-navigator git:(main) ✗ python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
+(.venv) ➜ python main.py config.yaml --input "How do I see who is logged onto the system?" --tools
 2025-01-31 08:20:40.475 - INFO - Initializing with config: config.yaml
 2025-01-31 08:20:40.477 - INFO - Processing text input: How do I see who is logged onto the system?
 2025-01-31 08:20:40.477 - INFO - Using tool-based navigation with manpages
 2025-01-31 08:20:40.477 - INFO - Querying Ollama with model: llama3.2, user_input: How do I see who is logged onto the system?
 2025-01-31 08:20:40.477 - INFO - Config OODA Loop Observe Content: You are a command line (CLI) expert.  Your task is to find the command or combinations of commands that best match the user's input. You must be 100% sure your response does not include any arguments or parameters for the commands.
-
 2025-01-31 08:20:41.844 - INFO - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
 2025-01-31 08:20:41.846 - INFO - Observe Response: model='llama3.2' created_at='2025-01-31T15:20:41.839241Z' done=True done_reason='stop' total_duration=1358939708 load_duration=32557583 prompt_eval_count=225 prompt_eval_duration=879000000 eval_count=18 eval_duration=444000000 message=Message(role='assistant', content='', images=None, tool_calls=[ToolCall(function=Function(name='get_manpage', arguments={'command': 'who'}))])
 2025-01-31 08:20:41.846 - INFO - Calling get_manpage with command: who
