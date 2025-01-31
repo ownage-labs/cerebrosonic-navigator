@@ -3,12 +3,11 @@ kind: Config
 metadata:
   name: cerebrosonic-navigator-config
   description: speech-driven command line expert
-  author: ownage-labs
   date: 01/23/2025
 spec:
   models:
     ollama: llama3.2
-    realtimestt: whisper-tiny ## TODO: add support for realtimestt model selection
+    realtimestt: whisper-tiny 
   ooda_loop:
     observe: >
       You are a command line (CLI) expert. 
