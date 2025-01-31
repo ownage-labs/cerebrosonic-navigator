@@ -24,9 +24,8 @@ sequenceDiagram
     Note over LLM: Determine relevant CLI commands
     LLM->>Man: Function Call: get_manpage
     Man->>LLM: Command Documentation
-    Note over LLM: Analyze manpages
-    LLM->>User: Explanation
-
+    Note over LLM: Analyze, select, and summarize
+    LLM->>User: Command Suggestion + Explanation
 ```
 
 ## Usage
