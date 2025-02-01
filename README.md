@@ -17,9 +17,10 @@ sequenceDiagram
     participant LLM as Local LLM (Ollama/SGL)
     participant Man as Local Manual Pages (Linux)
 
-    User->>STT: Text/Spoken request
+    User->>STT: Spoken request
     Note over STT: Whisper tiny model
     STT->>LLM: Transcribed text
+    User->>LLM: Text request
     Note over LLM: Retrieve
     LLM->>Man: Tool use: get_manpage(command)
     Man->>LLM: Command documentation
