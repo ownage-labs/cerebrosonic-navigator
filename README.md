@@ -12,12 +12,12 @@ An example of a private speech-driven CLI assistant using local LLMs, tools/func
 ## On-Device Flow (Tool Use/Function Calling + RAG)
 ```mermaid
 sequenceDiagram
-    participant User as User (Speech)
+    participant User as User (Speech/Text)
     participant STT as Local Speech-to-Text (RealtimeSTT)
     participant LLM as Local LLM (Ollama/SGL)
     participant Man as Local Manual Pages (Linux)
 
-    User->>STT: Spoken request
+    User->>STT: Text/Spoken request
     Note over STT: Whisper tiny model
     STT->>LLM: Transcribed text
     Note over LLM: Retrieve
