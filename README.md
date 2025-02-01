@@ -4,7 +4,7 @@ An example of a private speech-driven CLI assistant using local LLMs, tools/func
 ![Cerebrosonic Navigator](/docs/CerebrosonicNavigator.png)
 
 ## Features
-- **100% Private**: Uses on-device models via Ollama (e.g. Llama 3.2, DeepSeek-V3, DeepSeek-R1).
+- **100% Private & Open Source**: Uses on-device models via Ollama (e.g. Llama 3.2, DeepSeek-V3, DeepSeek-R1).
 - **Tool-Use and RAG**: Enhanced command suggestions via real-time tool-based retrieval augmented generation. Examples using Ollama and SGLang.
 - **Speech Recognition**: Real-time speech-to-text transcription for spoken navigation.
 - **Simplicity**: Under 200 lines of code.
