@@ -40,3 +40,16 @@ spec:
       Format your response using clear sections and bullet points.
       Focus on helping users understand when and why to use the command.
       Do not include specific command syntax or parameter examples.
+
+      Example Output:
+        Command Overview:
+        The `netstat` command provides information about active Internet connections, routing tables, 
+        interface statistics, and more.
+
+        Options Available:
+        * -a, --all: Display all connections
+        * -i, --interfaces: Display interfaces and their statistics
+        * -n, --numeric-ports: Show port numbers instead of hostnames
+        * -p, --protocol: Specify a protocol (e.g., TCP, UDP)
+        * -r, --routing-table: Display the routing table
+        * -s, --statistics: Display statistics about interfaces and protocols
