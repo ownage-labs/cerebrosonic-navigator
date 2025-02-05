@@ -97,6 +97,48 @@ Options Available:
 ```
 </details>
 
+## Installation
+
+### 1. System Requirements
+```bash
+# MacOS (using Homebrew)
+brew install portaudio ffmpeg ollama
+
+# Linux (Ubuntu/Debian)
+sudo apt-get update
+sudo apt-get install python3.9 python3.9-dev portaudio19-dev ffmpeg
+curl https://ollama.ai/install.sh | sh
+```
+
+### 2. Python Environment
+```bash
+# Create and activate virtual environment
+python3.9 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### 3. Ollama Model Setup
+```bash
+# Pull required models
+ollama pull llama3.2:latest
+ollama pull deepseek-r1:8b
+
+# Verify Ollama is running (default port 11434)
+curl http://localhost:11434/api/tags
+```
+
+### 4. Configuration
+```bash
+# Copy example config
+cp config.example.yaml config.yaml
+
+# Edit config to select your preferred model
+vim config.yaml
+```
+
 ## MacOS Setup Requirements
 - **pyaudio**: `brew install portaudio`
 - **ffmpeg**: `brew install ffmpeg`
