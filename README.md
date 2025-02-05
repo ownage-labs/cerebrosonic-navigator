@@ -138,11 +138,5 @@ cp config.example.yaml config.yaml
 # Edit config to select your preferred model
 vim config.yaml
 ```
-
-## MacOS Setup Requirements
-- **pyaudio**: `brew install portaudio`
-- **ffmpeg**: `brew install ffmpeg`
-- **python3.9** recommended
-
 ## License
 Apache License 2.0. See [LICENSE](LICENSE) file for details.
