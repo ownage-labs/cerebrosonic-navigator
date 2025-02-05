@@ -1,3 +1,20 @@
+"""
+Cerebrosonic Navigator: A private speech-driven CLI assistant using local LLMs.
+
+This module implements a CLI tool that converts spoken or text input into Unix/Linux
+command suggestions using local language models and manual page retrieval for accuracy.
+
+Features:
+    - Speech-to-text using RealtimeSTT
+    - Local LLM inference using Ollama
+    - Function calling and RAG using manual pages
+    - YAML-based configuration
+
+Example:
+    $ python main.py config.yaml --input "How do I list files?"
+    $ python main.py config.yaml --input "How do I check disk space?" --tools
+"""
+
 import typer
 import yaml
 import logging
@@ -17,7 +34,25 @@ logger = logging.getLogger(__name__)
 app = typer.Typer()
 
 class CerebrosonicNavigator:
+    """
+    A private CLI assistant using local LLMs and manual page retrieval.
+
+    This class handles the core functionality of processing user input (speech or text)
+    and generating appropriate CLI command suggestions with explanations.
+
+    Attributes:
+        config_data (dict): Loaded configuration from YAML file
+        ollama_model (str): Name of the Ollama model to use
+        tasks (dict): Retrieval and summarization prompts
+    """
+
     def __init__(self, config_path: str):
+        """
+        Initialize the navigator with configuration.
+
+        Args:
+            config_path (str): Path to YAML configuration file
+        """
         self.config_data = self._load_config(config_path)
         self.ollama_model = self.config_data.get('spec', {}).get('models', {}).get('ollama', 'llama3.2')
         self.tasks = self.config_data.get('spec', {}).get('tasks', {})
@@ -34,6 +69,12 @@ class CerebrosonicNavigator:
             raise typer.Exit(1)
 
     def transcribe(self) -> str:
+        """
+        Record and transcribe speech input using RealtimeSTT.
+
+        Returns:
+            str: Transcribed text from speech input
+        """
         with AudioToTextRecorder() as recorder:
             recorder.start()
             input("Recording started. Press Enter to stop...")
@@ -42,13 +83,17 @@ class CerebrosonicNavigator:
 
     def get_manpage(self, command: str) -> str:
         """
-        Get the manpage for a given command.
-        
-        Args:
-            command (str): The command to get the manpage for.
+        Retrieve manual page content for a command.
 
+        Args:
+            command (str): Command to get manual page for
+            
         Returns:
-            str: The manpage for the command.
+            str: Manual page content or empty string if not found
+        
+        Example:
+            >>> navigator.get_manpage("ls")
+            'LS(1)   User Commands...'
         """
         try:
             command = command.split()[0]
@@ -60,6 +105,19 @@ class CerebrosonicNavigator:
             return ""
 
     def navigate_cli(self, user_input: str) -> str:
+        """
+        Process user input using SGLang for structured command generation.
+
+        Args:
+            user_input (str): User's command request
+
+        Returns:
+            str: Generated state containing command suggestion and explanation
+        
+        Example:
+            >>> navigator.navigate_cli("How do I list files?")
+            {'command_suggestion': 'ls', 'summary': '...explanation...'}
+        """
         try:
             # Ollama must be running on port 11434
             backend = sgl.OpenAI(
@@ -92,7 +150,22 @@ class CerebrosonicNavigator:
             raise typer.Exit(1)    
         
     def navigate_cli_with_tools(self, user_input: str) -> str:
-        """Find commands associated with user's input."""
+        """
+        Process user input using function calling and manual page retrieval.
+
+        Uses Ollama's function calling to retrieve relevant manual pages and
+        generates a summary based on the retrieved documentation.
+
+        Args:
+            user_input (str): User's command request
+
+        Returns:
+            str: Generated summary based on manual page content
+        
+        Example:
+            >>> navigator.navigate_cli_with_tools("How do I check disk space?")
+            'Command Overview: The df command shows disk space usage...'
+        """
         try:
             logger.info(f"Querying Ollama with model: {self.ollama_model}, user_input: {user_input}")
 
@@ -147,7 +220,21 @@ def main(
     input: str = typer.Option(None, "--input", "-i", help="Optional text input instead of speech"),
     tools: bool = typer.Option(False, "--tools", "-t", help="Use tool-based navigation with manpages")
 ):
-    """Record and process audio input through local LLM with RAG"""
+    """
+    Cerebrosonic Navigator CLI entry point.
+
+    Processes either speech or text input to suggest appropriate Unix/Linux commands
+    with explanations. Can use either direct LLM generation or tool-based retrieval
+    augmented generation with manual pages.
+
+    Args:
+        config_path: Path to YAML configuration file
+        input: Optional text input (uses speech input if not provided)
+        tools: Whether to use tool-based navigation with manual pages
+    
+    Example:
+        $ python main.py config.yaml --input "How do I list files?" --tools
+    """
     navigator = CerebrosonicNavigator(config_path)
     
     if input:
