@@ -1,13 +1,13 @@
 # Cerebrosonic Navigator (Example)
-An example of a private speech-driven CLI assistant using local LLMs, tools/function calling, and retrieval augmented generation.
+Processes either speech or text input to suggest appropriate Unix/Linux commands with explanations. Can use either direct LLM generation or tool-based retrieval augmented generation (agentic RAG) with manual pages.
 
 ![Cerebrosonic Navigator](/docs/CerebrosonicNavigator.png)
 
 ## Features
-- **100% Private & Open Source**: Uses on-device models via Ollama (e.g. Llama 3.2, DeepSeek-V3, DeepSeek-R1).
+- **100% Private & Open Source**: Uses on-device hardware and does not transmit to the cloud.
+- **Easy-Swap Models**: Ollama integration to support the latest open source models. 
 - **Tool-Use and RAG**: Enhanced command suggestions via real-time tool-based retrieval augmented generation. Examples using Ollama and SGLang.
 - **Speech Recognition**: Real-time speech-to-text transcription for spoken navigation.
-- **Simplicity**: 172 lines of code.
 
 ## On-Device Flow (Tool Use/Function Calling + RAG)
 ```mermaid
